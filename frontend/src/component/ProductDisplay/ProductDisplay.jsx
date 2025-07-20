@@ -159,7 +159,7 @@ function ProductDisplay({ product }) {
                     <p><span>Category:</span> {product.category || 'Women'}</p>
                     <p><span>Tags:</span> {product.tags?.join(', ') || 'Latest, Popular, Premium'}</p>
                 </div>
-                <div className="des-rev"><DescriptionBox productId={product?.id || 0} /></div>
+                <div className="des-rev"><DescriptionBox productId={product.id} productDescription={product.description} /></div>
             </div>
         </div>
     );

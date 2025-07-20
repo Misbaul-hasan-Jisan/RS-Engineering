@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 
 const api = import.meta.env.VITE_API_BASE_URL;
 
-const DescriptionBox = ({ productId }) => {
-  console.log('[DescriptionBox] Initializing with productId:', productId); // Debug log
+const DescriptionBox = ({ productId, productDescription }) => {
+  console.log('[DescriptionBox] Initializing with productId:', productId);
   
   // Validate productId at the start
   if (!productId) {
@@ -24,6 +24,25 @@ const DescriptionBox = ({ productId }) => {
   const [hoverRating, setHoverRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [description, setDescription] = useState(productDescription || "");
+
+  useEffect(() => {
+    // If productDescription wasn't passed as prop, fetch it
+    if (!productDescription) {
+      const fetchProductDetails = async () => {
+        try {
+          const response = await fetch(`${api}/products/${productId}`);
+          if (!response.ok) throw new Error('Failed to fetch product details');
+          const data = await response.json();
+          setDescription(data.description || "No description available");
+        } catch (error) {
+          console.error('Error fetching product description:', error);
+          setDescription("Description not available");
+        }
+      };
+      fetchProductDetails();
+    }
+  }, [productId, productDescription]);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -32,7 +51,6 @@ const DescriptionBox = ({ productId }) => {
       
       try {
         const url = `${api}/products/${productId}/reviews`;
-        
         const response = await fetch(url);
         
         if (!response.ok) {
@@ -40,10 +58,8 @@ const DescriptionBox = ({ productId }) => {
         }
         
         const data = await response.json();
-        
         setReviews(data.reviews || []);
       } catch (error) {
-
         setError(error.message);
       } finally {
         setIsLoading(false);
@@ -75,7 +91,7 @@ const DescriptionBox = ({ productId }) => {
       }
 
       const url = `${api}/products/${productId}/reviews`;
-      console.log('[DescriptionBox] Posting to:', url); // Debug log
+      console.log('[DescriptionBox] Posting to:', url);
       
       const response = await fetch(url, {
         method: 'POST',
@@ -95,12 +111,12 @@ const DescriptionBox = ({ productId }) => {
       }
 
       const data = await response.json();
-      console.log('[DescriptionBox] Review submitted successfully:', data); // Debug log
+      console.log('[DescriptionBox] Review submitted successfully:', data);
       
       setReviews([data.review, ...reviews]);
       setNewReview({ rating: 0, comment: "" });
     } catch (error) {
-      console.error('[DescriptionBox] Error submitting review:', error); // Debug log
+      console.error('[DescriptionBox] Error submitting review:', error);
       setError(error.message);
     } finally {
       setIsLoading(false);
@@ -131,7 +147,7 @@ const DescriptionBox = ({ productId }) => {
             onMouseEnter={isInput ? () => setHoverRating(star) : null}
             onMouseLeave={isInput ? () => setHoverRating(0) : null}
             onClick={isInput ? () => {
-              console.log('[DescriptionBox] Selected rating:', star); // Debug log
+              console.log('[DescriptionBox] Selected rating:', star);
               setNewReview({ ...newReview, rating: star });
             } : null}
           >
@@ -146,7 +162,6 @@ const DescriptionBox = ({ productId }) => {
     );
   };
 
-
   return (
     <div className="descriptionbox">
       <div className="descriptionbox-navigator">
@@ -154,10 +169,7 @@ const DescriptionBox = ({ productId }) => {
           className={`descriptionbox-navbox ${
             activeTab === "description" ? "active" : ""
           }`}
-          onClick={() => {
-            console.log('[DescriptionBox] Switching to description tab'); // Debug log
-            setActiveTab("description");
-          }}
+          onClick={() => setActiveTab("description")}
         >
           Description
         </div>
@@ -165,10 +177,7 @@ const DescriptionBox = ({ productId }) => {
           className={`descriptionbox-navbox ${
             activeTab === "reviews" ? "active" : "fade"
           }`}
-          onClick={() => {
-            console.log('[DescriptionBox] Switching to reviews tab'); // Debug log
-            setActiveTab("reviews");
-          }}
+          onClick={() => setActiveTab("reviews")}
         >
           Reviews ({reviews.length})
         </div>
@@ -176,17 +185,13 @@ const DescriptionBox = ({ productId }) => {
 
       <div className="descriptionbox-description">
         {activeTab === "description" ? (
-          <>
-            <p>
-              An e-commerce website is an online platform that facilitates the
-              buying and selling of products or services over the internet.
-            </p>
-            <p>
-              E-commerce websites typically display products or services along
-              with detailed descriptions, images, prices and any available
-              variations.
-            </p>
-          </>
+          <div className="product-description">
+            {description ? (
+              <p>{description}</p>
+            ) : (
+              <p>No description available for this product.</p>
+            )}
+          </div>
         ) : (
           <div className="reviews-section">
             {error && (
@@ -230,10 +235,7 @@ const DescriptionBox = ({ productId }) => {
                   <textarea
                     id="review-comment"
                     value={newReview.comment}
-                    onChange={(e) => {
-                      console.log('[DescriptionBox] Review comment changed:', e.target.value); // Debug log
-                      setNewReview({ ...newReview, comment: e.target.value });
-                    }}
+                    onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
                     required
                     disabled={isLoading}
                   />
@@ -258,7 +260,8 @@ DescriptionBox.propTypes = {
   productId: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
-  ]).isRequired
+  ]).isRequired,
+  productDescription: PropTypes.string
 };
 
 export default DescriptionBox;

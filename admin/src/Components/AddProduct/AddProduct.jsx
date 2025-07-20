@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import './AddProduct.css';
 import upload_area from '../../assets/upload_area.svg';
-const API =import.meta.env.VITE_API_BASE_URL;
+const API = import.meta.env.VITE_API_BASE_URL;
 
 const AddProduct = () => {
     const [image, setImage] = useState(null);
     const [productDetails, setProductDetails] = useState({
         name: "",
         image: "",
-        category: "lifestyle", // Default to mens to match backend
+        category: "lifestyle",
         new_price: "",
-        old_price: ""
+        old_price: "",
+        description: "" // Added description field
     });
     const [isLoading, setIsLoading] = useState(false);
 
@@ -27,9 +28,10 @@ const AddProduct = () => {
     };
 
     const Add_Product = async () => {
-        // Validate required fields
-        if (!productDetails.name || !productDetails.new_price || !productDetails.old_price || !image) {
-            alert("Please fill all fields including the image");
+        // Validate required fields (added description to validation)
+        if (!productDetails.name || !productDetails.new_price || 
+            !productDetails.old_price || !image || !productDetails.description) {
+            alert("Please fill all fields including the image and description");
             return;
         }
 
@@ -90,6 +92,20 @@ const AddProduct = () => {
                     required
                 />
             </div>
+            
+            {/* Added description field */}
+            <div className="add-product-itemfield">
+                <p>Product Description</p>
+                <textarea 
+                    value={productDetails.description} 
+                    onChange={changeHandler} 
+                    name="description" 
+                    placeholder='Enter product description'
+                    rows="4"
+                    required
+                />
+            </div>
+            
             <div className="add-product-price">
                 <div className="add-product-itemfield">
                     <p>Price ($)</p>

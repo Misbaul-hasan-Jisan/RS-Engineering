@@ -113,6 +113,7 @@ const Product = mongoose.model("Product", {
   },
   new_price: Number,
   old_price: Number,
+  description: String, // Added description field
   date: { type: Date, default: Date.now },
   available: { type: Boolean, default: true },
   sizes: {
@@ -121,7 +122,6 @@ const Product = mongoose.model("Product", {
       return this.category === 'fashion' ? ['S', 'M', 'L', 'XL', 'XXL'] : [];
     }
   },
-  // Add these new fields
   rating: { type: Number, default: 0 },
   reviewCount: { type: Number, default: 0 }
 });
@@ -184,13 +184,13 @@ app.post("/upload", upload.single('product'), async (req, res) => {
 // Products
 app.post('/add-product', async (req, res) => {
   try {
-    const { name, image, category, new_price, old_price, sizes } = req.body;
+    const { name, image, category, new_price, old_price, sizes, description } = req.body;
     
-    // Validate required fields
-    if (!name || !image || !category || !new_price) {
+    // Validate required fields (added description to validation)
+    if (!name || !image || !category || !new_price || !description) {
       return res.status(400).json({ 
         success: false, 
-        error: "Missing required fields (name, image, category, new_price)" 
+        error: "Missing required fields (name, image, category, new_price, description)" 
       });
     }
 
@@ -198,7 +198,7 @@ app.post('/add-product', async (req, res) => {
     const lastProduct = await Product.findOne().sort({ id: -1 });
     const id = lastProduct ? lastProduct.id + 1 : 1;
 
-    // Prepare product data
+    // Prepare product data (added description)
     const productData = {
       id,
       name: sanitizeHtml(name),
@@ -206,6 +206,7 @@ app.post('/add-product', async (req, res) => {
       category,
       new_price: Number(new_price),
       old_price: old_price ? Number(old_price) : null,
+      description: sanitizeHtml(description), // Added description with sanitization
       // Only include sizes for fashion products
       sizes: category.toLowerCase() === 'fashion' 
         ? (sizes || ["S", "M", "L", "XL", "XXL"])
@@ -222,6 +223,7 @@ app.post('/add-product', async (req, res) => {
         id: product.id,
         name: product.name,
         category: product.category,
+        description: product.description, // Include description in response
         sizes: product.sizes
       }
     });
@@ -234,7 +236,7 @@ app.post('/add-product', async (req, res) => {
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
-});
+});;
 
 app.post('/remove-product', async (req, res) => {
   try {
