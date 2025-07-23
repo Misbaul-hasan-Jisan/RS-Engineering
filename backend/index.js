@@ -15,20 +15,27 @@ const admin = require('firebase-admin');
 
 // Force CORS headers manually for Pages.dev
 app.use((req, res, next) => {
-  const allowedOrigin = 'https://rs-engineering.pages.dev';
+  const allowedOrigins = [
+    'https://rs-engineering.pages.dev',
+    'https://rs-engineering-admin.pages.dev'
+  ];
+  const origin = req.headers.origin;
 
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, auth-token');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  
-  // Handle preflight OPTIONS request
+
   if (req.method === 'OPTIONS') {
     return res.sendStatus(204);
   }
 
   next();
 });
+
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
