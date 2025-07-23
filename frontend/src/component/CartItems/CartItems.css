@@ -479,7 +479,9 @@
 /* Mobile Quantity Button Fix */
 /* ===================== */
 @media (max-width: 768px) {
-  .cartitems-quantity {
+  .cartitems-quantity
+  .cartitems-quantity span
+   {
     /* Force visibility and proper layout */
     display: flex !important;
     visibility: visible !important;
