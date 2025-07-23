@@ -71,7 +71,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use(cors(corsOptions));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://web-dev:animate2080@cluster0.qwfkw6q.mongodb.net/RnS")
   .then(() => console.log("MongoDB Connected"))
