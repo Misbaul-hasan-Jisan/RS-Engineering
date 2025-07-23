@@ -476,71 +476,55 @@
   }
 }
 /* ===================== */
-/* Mobile Responsive Fixes */
+/* Mobile Quantity Button Fix */
 /* ===================== */
 @media (max-width: 768px) {
-  .cartitems-format-main,
-  .cartitems-format {
-    grid-template-columns: 60px 1fr 1fr 1fr !important;
-    gap: 12px;
-    padding: 12px 0;
-    font-size: 14px;
-  }
-
-  .cartitems-format-main {
-    display: none !important; /* Hide headers on mobile */
-  }
-
-  .cartitems-format {
-    position: relative;
-    padding-bottom: 15px;
-  }
-
-  .carticon-product-icon {
-    height: 50px;
-    width: 50px;
-  }
-
   .cartitems-quantity {
-    position: absolute;
-    right: 40px;
-    bottom: 10px;
-    display: flex;
+    /* Force visibility and proper layout */
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    width: auto !important;
+    height: auto !important;
     gap: 6px;
-    align-items: center;
+    padding: 4px 8px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    border: 1px solid #eee;
   }
 
   .cartitems-quantity button {
-    width: 26px;
-    height: 26px;
-    font-size: 14px;
+    /* Guaranteed visible button */
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    
+    /* Mobile-friendly sizing */
+    min-width: 32px !important;
+    min-height: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 16px !important;
+    
+    /* Visual styling */
+    background: white !important;
+    border: 1px solid #ccc !important;
+    color: #333 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
   }
 
-  .cartitems-remove-icon {
-    position: absolute;
-    right: 5px;
-    bottom: 15px;
+  /* Fix potential grid layout issues */
+  .cartitems-format {
+    grid-template-columns: 60px 1fr 1fr 0.5fr !important;
+    overflow: visible !important;
   }
-
-  .cartitems-format > p:nth-child(4) { /* Price */
-    text-align: right;
-    padding-right: 10px;
-  }
-
-  .cartitems-format > p:nth-child(3) { /* Size */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .cartitems-down {
-    flex-direction: column;
-    margin: 30px 0;
-    gap: 20px;
-  }
-
-  .cartitems-total,
-  .cartitems-promocode {
-    min-width: 100%;
+  
+  /* Nuclear option if still hidden */
+  .cartitems-quantity * {
+    display: flex !important;
+    visibility: visible !important;
   }
 }
