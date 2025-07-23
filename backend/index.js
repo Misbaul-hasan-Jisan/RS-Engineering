@@ -7,12 +7,28 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
-const cors = require("cors");
 const bcrypt = require('bcryptjs');
 const sanitizeHtml = require('sanitize-html');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const admin = require('firebase-admin');
+
+// Force CORS headers manually for Pages.dev
+app.use((req, res, next) => {
+  const allowedOrigin = 'https://rs-engineering.pages.dev';
+
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, auth-token');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -37,38 +53,8 @@ cloudinary.api.ping((error, result) => {
   }
 });
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    // 1. Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
 
-    // 2. Convert CORS_ORIGIN to array and clean URLs
-    const allowedOrigins = (process.env.CORS_ORIGIN || '')
-      .split(',')
-      .map(url => url.trim().replace(/\/$/, '')); // Remove trailing slashes
 
-    // 3. Check against allowed origins
-    if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    // 4. Special case for Render.com subdomains
-    const originHost = new URL(origin).hostname;
-    if (allowedOrigins.some(url => new URL(url).hostname === originHost)) {
-      return callback(null, true);
-    }
-
-    callback(new Error(`Origin ${origin} not allowed by CORS`));
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'auth-token'],
-  credentials: true,
-  // Critical for Render.com:
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-};
-
-app.use(cors(corsOptions));
 
 app.use(express.json());
 
