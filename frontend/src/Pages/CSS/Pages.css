@@ -1,38 +1,167 @@
 .page-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem 2rem;
+  background: linear-gradient(to bottom, #f9f9f9 0%, #ffffff 100%);
 }
 
 .product-grid, .store-locations {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
+  margin-top: 3rem;
 }
 
 .product-card, .store-card {
-  border: 1px solid #ddd;
-  padding: 1.5rem;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.product-card::before, .store-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #ff8a00, #e52e71, #0066cc);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .product-card:hover, .store-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.03);
+}
+
+.product-card:hover::before, .store-card:hover::before {
+  opacity: 1;
+}
+
+.product-card-image-container, .store-card-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  aspect-ratio: 1/1;
+  background: #f8f8f8;
+}
+
+.product-card-image-container img, .store-card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.product-card:hover .product-card-image-container img, 
+.store-card:hover .store-card-image-container img {
+  transform: scale(1.05);
 }
 
 button {
-  background-color: #0066cc;
+  background: linear-gradient(135deg, #0066cc 0%, #004799 100%);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.8rem 1.8rem;
+  border-radius: 50px;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
 }
 
 button:hover {
-  background-color: #0052a3;
+  background: linear-gradient(135deg, #004799 0%, #003366 100%);
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  transform: translateY(-2px);
+}
+
+button:hover::after {
+  left: 100%;
+}
+
+/* Glamorous additions */
+.product-card-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(45deg, #e52e71, #ff8a00);
+  color: white;
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 3px 10px rgba(229, 46, 113, 0.3);
+}
+
+.price-tag {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #222;
+  margin: 1rem 0;
+  position: relative;
+  display: inline-block;
+}
+
+.price-tag::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #0066cc, #e52e71);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 2rem 1.5rem;
+  }
+  
+  .product-grid, .store-locations {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .product-card, .store-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Glow effect for premium feel */
+@keyframes subtleGlow {
+  0% { box-shadow: 0 0 10px rgba(0, 102, 204, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(0, 102, 204, 0.15); }
+  100% { box-shadow: 0 0 10px rgba(0, 102, 204, 0.1); }
+}
+
+.product-card:hover {
+  animation: subtleGlow 3s infinite;
 }

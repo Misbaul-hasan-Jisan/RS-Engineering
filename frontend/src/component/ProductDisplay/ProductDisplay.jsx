@@ -105,9 +105,6 @@ function ProductDisplay({ product }) {
                     )}
                 </div>
                 
-                <div className="product-display-description">
-                    {product.description || "Premium quality product with modern design and comfortable fit."}
-                </div>
                 
                 {/* Size selection - only for fashion products */}
                 {isFashionProduct && (

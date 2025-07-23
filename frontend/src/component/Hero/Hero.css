@@ -1,4 +1,10 @@
 /* Hero.css */
+/* Add this at the top with your other animations */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes fadeIn {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -242,36 +248,66 @@
     flex-direction: column;
     text-align: center;
     background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh; /* Changed from height to min-height */
+    height: auto;
+    padding: 20px 0;
   }
+  
   .hero-left {
     padding: 40px 20px;
     align-items: center;
     animation: fadeInUp 1s ease-out 0.3s forwards;
+    z-index: 3; /* Ensure it's above background elements */
   }
+  
   .hero-right {
     padding: 20px;
     animation: fadeInUp 1s ease-out 0.5s forwards;
+    z-index: 2;
   }
+  
   .hero-right img {
-    height: 400px;
+    height: 300px; /* Reduced from 400px for better mobile fit */
     animation: float 4s ease-in-out infinite;
   }
+  
+  .hero-bg-pattern {
+    display: none; /* Simplify background on mobile */
+  }
+  
   .hero-bg-shapes::before,
   .hero-bg-shapes::after {
     display: none;
+  }
+  
+  .hero-left p {
+    font-size: 60px; /* Adjusted from 50px for better readability */
+    text-align: center;
+  }
+  
+  .hero-hand-icon {
+    justify-content: center;
   }
 }
 
 @media (max-width: 500px) {
   .hero-left p {
-    font-size: 50px;
+    font-size: 48px; /* Slightly smaller for very small screens */
+    line-height: 1.2;
   }
+  
   .hero-right img {
-    height: 300px;
+    height: 280px;
   }
+  
   .hero-latest-button {
-    width: 250px;
-    height: 60px;
-    font-size: 18px;
+    width: 220px;
+    height: 55px;
+    font-size: 16px;
+    margin: 20px auto;
+  }
+  
+  .hero-hand-icon img {
+    width: 60px;
   }
 }

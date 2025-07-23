@@ -39,6 +39,8 @@
 
 .footer-links li{
     cursor: pointer;
+    transition: color 0.3s ease;
+    background: #355E3B;
 }
 
 .footer-social-icons{
