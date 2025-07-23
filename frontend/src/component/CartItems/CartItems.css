@@ -475,10 +475,35 @@
     font-size: 16px;
   }
 }
+/* ===================== */
+/* Mobile Quantity Buttons Fix */
+/* ===================== */
 @media (max-width: 768px) {
-  .cartitems-quantity button {
+  .cartitems-quantity {
+    /* Ensure the container stays visible */
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
+    /* Adjust spacing for mobile */
+    gap: 6px;
+    padding: 3px 8px;
+  }
+
+  .cartitems-quantity button {
+    /* Force visibility */
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    /* Mobile-friendly sizing */
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    font-size: 16px !important;
+  }
+
+  /* Fix potential parent overflow issues */
+  .cartitems-format {
+    overflow: visible !important;
   }
 }
