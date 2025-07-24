@@ -489,68 +489,76 @@
     padding: 0 15px 30px;
   }
 
-  .cartitems-format-main,
-  .cartitems-format {
-    grid-template-columns: 1fr 1fr; /* Two columns for mobile */
-    grid-template-areas: 
-      "image name"
-      "size price"
-      "quantity total"
-      "remove remove";
-    gap: 15px;
-    padding: 20px 0;
-    position: relative;
-  }
-
   .cartitems-format-main {
     display: none; /* Hide header on mobile */
   }
 
+  .cartitems-format {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    grid-template-areas: 
+      "image name"
+      "image size"
+      "price quantity"
+      "total remove";
+    gap: 12px;
+    padding: 20px 0;
+    position: relative;
+    border-bottom: 1px solid #eaeaea; /* Replace hr with border */
+  }
+
   .carticon-product-icon {
     grid-area: image;
-    height: 60px;
-    width: 60px;
+    height: 70px;
+    width: 70px;
+    align-self: center;
   }
 
   .cartitems-format p:nth-child(2) {
     grid-area: name;
-    align-self: center;
+    align-self: end;
     font-weight: 600;
+    margin: 0;
   }
 
   .cartitems-format p:nth-child(3) {
     grid-area: size;
     color: #666;
     font-size: 14px;
+    align-self: start;
+    margin: 0;
   }
 
   .cartitems-format p:nth-child(4) {
     grid-area: price;
     font-weight: 600;
+    margin: 0;
   }
 
   .cartitems-quantity {
     grid-area: quantity;
     justify-self: start;
-    margin: 5px 0;
+    margin: 0;
   }
 
   .cartitems-format p:nth-child(6) {
     grid-area: total;
     font-weight: 700;
     color: #004d4d;
-    justify-self: end;
-    align-self: center;
+    justify-self: start;
+    margin: 0;
   }
 
   .cartitems-remove-icon {
     grid-area: remove;
     justify-self: end;
-    margin: 10px 0 0;
+    align-self: center;
+    margin: 0;
   }
 
+  /* Remove the hr element from your JSX since we're using border-bottom */
   hr {
-    margin: 15px 0;
+    display: none;
   }
 
   .cartitems-down {
@@ -566,13 +574,24 @@
 
 @media (max-width: 480px) {
   .cartitems-quantity button {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+    width: 26px;
+    height: 26px;
+    font-size: 15px;
   }
 
   .cartitems-quantity span {
-    min-width: 24px;
-    font-size: 15px;
+    min-width: 22px;
+    font-size: 14px;
+  }
+
+  .cartitems-format {
+    grid-template-columns: 60px 1fr;
+    gap: 10px;
+    padding: 15px 0;
+  }
+
+  .carticon-product-icon {
+    height: 60px;
+    width: 60px;
   }
 }

@@ -190,7 +190,6 @@ const CartItems = () => {
                     alt="Remove"
                   />
                 </div>
-                <hr />
               </div>
             );
           }
