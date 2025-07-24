@@ -144,6 +144,10 @@ const Navbar = () => {
           <Link to='/lifestyle' style={{textDecoration: 'none', color: 'black'}}>Lifestyle</Link>
           {menu === "Lifestyle" ? <hr /> : null}
         </li>
+        <li onClick={() => { setMenu("Vehicle Accessories"); closeMobileMenu(); }}>
+          <Link to='/vehicle' style={{textDecoration: 'none', color: 'black'}}>Vehicle Accessories</Link>
+          {menu === "Vehicle Accessories" ? <hr /> : null}
+        </li>
       </ul>
 
       {/* Search, login, cart */}

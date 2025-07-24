@@ -12,6 +12,7 @@ import electronics_banner from './component/Assets/electronic_banner.webp'
 import computer_banner from './component/Assets/computer_banner.webp'
 import fashion_banner from './component/Assets/fashion_banner.webp'
 import lifestyle_banner from './component/Assets/lifestyle_banner.webp'
+import vehicle_banner from './component/Assets/vehicle_banner.webp'
 import OrderConfirmation from './component/OrderConfirmation/OrderConfirmation'
 import MyOrders from './component/MyOrder/MyOrder'
 import SearchResults from './Pages/SearchResults'
@@ -30,6 +31,7 @@ function App() {
         <Route path='/electronics' element={<ShopCategory banner ={electronics_banner} category="electronics" />} />
         <Route path='/fashion' element={<ShopCategory banner ={fashion_banner} category="fashion" />} />
         <Route path='/lifestyle' element={<ShopCategory banner ={lifestyle_banner} category="lifestyle" />} />
+        <Route path='/vehicle' element={<ShopCategory banner ={vehicle_banner} category="vehicle" />} />
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/product/:productId' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
