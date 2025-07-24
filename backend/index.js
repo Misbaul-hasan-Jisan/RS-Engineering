@@ -60,9 +60,6 @@ cloudinary.api.ping((error, result) => {
   }
 });
 
-
-
-
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://web-dev:animate2080@cluster0.qwfkw6q.mongodb.net/RnS")
@@ -100,7 +97,7 @@ const Product = mongoose.model("Product", {
   image: String,
   category: {
     type: String,
-    enum: ['electronics', 'computer', 'fashion', 'lifestyle'],
+    enum: ['electronics', 'computer', 'fashion', 'lifestyle', 'vehicle'],
     required: true
   },
   new_price: Number,
