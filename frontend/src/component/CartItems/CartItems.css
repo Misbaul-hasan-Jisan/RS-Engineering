@@ -475,3 +475,104 @@
     font-size: 16px;
   }
 }
+
+/* ===================== */
+/*     CartItems.css     */
+/* ===================== */
+
+/* ... (keep all your existing styles) ... */
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .cartitems {
+    margin: 30px auto;
+    padding: 0 15px 30px;
+  }
+
+  .cartitems-format-main,
+  .cartitems-format {
+    grid-template-columns: 1fr 1fr; /* Two columns for mobile */
+    grid-template-areas: 
+      "image name"
+      "size price"
+      "quantity total"
+      "remove remove";
+    gap: 15px;
+    padding: 20px 0;
+    position: relative;
+  }
+
+  .cartitems-format-main {
+    display: none; /* Hide header on mobile */
+  }
+
+  .carticon-product-icon {
+    grid-area: image;
+    height: 60px;
+    width: 60px;
+  }
+
+  .cartitems-format p:nth-child(2) {
+    grid-area: name;
+    align-self: center;
+    font-weight: 600;
+  }
+
+  .cartitems-format p:nth-child(3) {
+    grid-area: size;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .cartitems-format p:nth-child(4) {
+    grid-area: price;
+    font-weight: 600;
+  }
+
+  .cartitems-quantity {
+    grid-area: quantity;
+    justify-self: start;
+    margin: 5px 0;
+  }
+
+  .cartitems-format p:nth-child(6) {
+    grid-area: total;
+    font-weight: 700;
+    color: #004d4d;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .cartitems-remove-icon {
+    grid-area: remove;
+    justify-self: end;
+    margin: 10px 0 0;
+  }
+
+  hr {
+    margin: 15px 0;
+  }
+
+  .cartitems-down {
+    margin: 40px 0;
+    gap: 30px;
+  }
+
+  .cartitems-total,
+  .cartitems-promocode {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cartitems-quantity button {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .cartitems-quantity span {
+    min-width: 24px;
+    font-size: 15px;
+  }
+}
