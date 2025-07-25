@@ -8,7 +8,7 @@ export default defineConfig({
     Sitemap({
       hostname: 'https://rs-engineering.pages.dev',
       routes: [
-        '/', // Home
+        '/',
         '/computer',
         '/electronics',
         '/fashion',

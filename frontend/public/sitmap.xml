@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/computer</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/electronics</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/fashion</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/lifestyle</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/vehicle</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/search-results</loc>
+  </url>
+
+  <!-- For product details, include some sample product IDs -->
+  <url>
+    <loc>https://rs-engineering.pages.dev/product/1</loc>
+  </url>
+  <url>
+    <loc>https://rs-engineering.pages.dev/product/2</loc>
+  </url>
+  <url>
+    <loc>https://rs-engineering.pages.dev/product/3</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/cart</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/login</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/order-confirmation</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/my-orders</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/contact</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/about</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/company</loc>
+  </url>
+
+  <url>
+    <loc>https://rs-engineering.pages.dev/store</loc>
+  </url>
+
+</urlset>
