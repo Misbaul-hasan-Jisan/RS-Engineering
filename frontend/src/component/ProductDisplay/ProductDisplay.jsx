@@ -92,11 +92,11 @@ function ProductDisplay({ product }) {
                 <div className='product-display-prices'>
                     {product.old_price && (
                         <div className="product-display-oldprice">
-                            ${product.old_price}
+                        ৳{product.old_price}
                         </div>
                     )}
                     <div className="product-display-newprice">
-                        ${product.new_price}
+                        ৳{product.new_price}
                     </div>
                     {product.discount && (
                         <span className="discount-badge">

@@ -39,7 +39,7 @@ const MyOrders = () => {
             <li key={order._id} className="order-card">
               <p className="order-id">Order #{order._id}</p>
               <p className="order-status">Status: {order.status}</p>
-              <p className="order-total">Total: ${order.total}</p>
+              <p className="order-total">Total: ৳{order.total}</p>
             </li>
           ))}
         </ul>

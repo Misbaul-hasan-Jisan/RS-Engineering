@@ -122,7 +122,7 @@ const OrderConfirmation = () => {
           <strong>Date:</strong> {new Date(order?.createdAt).toLocaleString()}
         </p>
         <p>
-          <strong>Total:</strong> ${order?.total?.toFixed(2)}
+          <strong>Total:</strong> ৳{order?.total?.toFixed(2)}
         </p>
       </div>
 
