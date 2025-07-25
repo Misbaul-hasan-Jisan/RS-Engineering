@@ -69,8 +69,8 @@ const ProductList = () => {
             <div key={product.id} className="product-item">
               <img src={product.image} alt={product.name} />
               <span data-label="Name">{product.name}</span>
-              <span data-label="Old Price">${product.old_price}</span>
-              <span data-label="New Price">${product.new_price}</span>
+              <span data-label="Old Price">৳{product.old_price}</span>
+              <span data-label="New Price">৳{product.new_price}</span>
               <span data-label="Category">{product.category}</span>
               <button onClick={() => removeProduct(product.id)}>
                 <img src={cross_icon} alt="Delete" />
