@@ -32,8 +32,6 @@
   <url>
     <loc>https://rs-engineering.pages.dev/search-results</loc>
   </url>
-
-  <!-- For product details, include some sample product IDs -->
   <url>
     <loc>https://rs-engineering.pages.dev/product/1</loc>
   </url>
