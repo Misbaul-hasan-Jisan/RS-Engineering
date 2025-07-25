@@ -42,7 +42,7 @@ const AddProduct = () => {
             const formData = new FormData();
             formData.append('product', image);
             
-            const uploadRes = await fetch(`${API}/upload`, {
+            const uploadRes = await fetch(`৳{API}/upload`, {
                 method: 'POST',
                 body: formData
             });
@@ -57,7 +57,7 @@ const AddProduct = () => {
                 image: uploadData.image_url
             };
 
-            const addRes = await fetch(`${API}/add-product`, {
+            const addRes = await fetch(`৳{API}/add-product`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product)
@@ -73,7 +73,7 @@ const AddProduct = () => {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert(`Failed to add product: ${error.message}`);
+            alert(`Failed to add product: ৳{error.message}`);
         } finally {
             setIsLoading(false);
         }
@@ -108,7 +108,7 @@ const AddProduct = () => {
             
             <div className="add-product-price">
                 <div className="add-product-itemfield">
-                    <p>Price ($)</p>
+                    <p>Price (৳)</p>
                     <input 
                         value={productDetails.old_price} 
                         onChange={changeHandler} 
@@ -121,7 +121,7 @@ const AddProduct = () => {
                     />
                 </div>
                 <div className="add-product-itemfield">
-                    <p>Offer Price ($)</p>
+                    <p>Offer Price (৳)</p>
                     <input 
                         value={productDetails.new_price} 
                         onChange={changeHandler} 
