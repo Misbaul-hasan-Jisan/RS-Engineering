@@ -42,7 +42,7 @@ const AddProduct = () => {
             const formData = new FormData();
             formData.append('product', image);
             
-            const uploadRes = await fetch(`৳{API}/upload`, {
+            const uploadRes = await fetch(`${API}/upload`, {
                 method: 'POST',
                 body: formData
             });
