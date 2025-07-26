@@ -61,6 +61,7 @@ cloudinary.api.ping((error, result) => {
 });
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://web-dev:animate2080@cluster0.qwfkw6q.mongodb.net/RnS")
   .then(() => console.log("MongoDB Connected"))
@@ -175,14 +176,44 @@ app.post("/upload", upload.single('product'), async (req, res) => {
 
 // Products
 app.post('/add-product', async (req, res) => {
+  // Debug log
+  console.log('Raw request body:', req.body);
+
   try {
-    const { name, image, category, new_price, old_price, sizes, description } = req.body;
-    
-    // Validate required fields (added description to validation)
-    if (!name || !image || !category || !new_price || !description) {
+    // Validate body exists
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Request body is missing",
+        solution: "Send JSON with Content-Type: application/json"
+      });
+    }
+
+    // Destructure with defaults
+    const { 
+      name = null, 
+      image = null, 
+      category = null, 
+      new_price = null, 
+      old_price = null, 
+      sizes = null, 
+      description = null 
+    } = req.body;
+
+    // Validate required fields
+    const missingFields = [];
+    if (!name) missingFields.push('name');
+    if (!image) missingFields.push('image');
+    if (!category) missingFields.push('category');
+    if (!new_price) missingFields.push('new_price');
+    if (!description) missingFields.push('description');
+
+    if (missingFields.length > 0) {
       return res.status(400).json({ 
-        success: false, 
-        error: "Missing required fields (name, image, category, new_price, description)" 
+        success: false,
+        error: "Missing required fields",
+        missingFields,
+        receivedBody: req.body // Echo back what was received for debugging
       });
     }
 
@@ -190,19 +221,18 @@ app.post('/add-product', async (req, res) => {
     const lastProduct = await Product.findOne().sort({ id: -1 });
     const id = lastProduct ? lastProduct.id + 1 : 1;
 
-    // Prepare product data (added description)
+    // Prepare product data
     const productData = {
       id,
       name: sanitizeHtml(name),
       image: sanitizeHtml(image),
-      category,
+      category: category.toLowerCase(), // normalize category
       new_price: Number(new_price),
       old_price: old_price ? Number(old_price) : null,
-      description: sanitizeHtml(description), // Added description with sanitization
-      // Only include sizes for fashion products
+      description: sanitizeHtml(description),
       sizes: category.toLowerCase() === 'fashion' 
         ? (sizes || ["S", "M", "L", "XL", "XXL"])
-        : undefined // Will use the model's default (empty array)
+        : []
     };
 
     // Create and save product
@@ -215,20 +245,21 @@ app.post('/add-product', async (req, res) => {
         id: product.id,
         name: product.name,
         category: product.category,
-        description: product.description, // Include description in response
+        price: product.new_price,
+        description: product.description,
         sizes: product.sizes
       }
     });
+
   } catch (error) {
     console.error("Add product error:", error);
     res.status(500).json({ 
       success: false, 
       error: error.message,
-      // Only show stack trace in development
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
-});;
+});
 
 app.post('/remove-product', async (req, res) => {
   try {
