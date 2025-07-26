@@ -73,7 +73,7 @@ const AddProduct = () => {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert(`Failed to add product: ৳{error.message}`);
+            alert(`Failed to add product: ${error.message}`);
         } finally {
             setIsLoading(false);
         }
