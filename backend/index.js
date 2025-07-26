@@ -14,20 +14,21 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const admin = require('firebase-admin');
 
 // Force CORS headers manually for Pages.dev
+// Replace your current CORS middleware with:
 app.use((req, res, next) => {
   const allowedOrigins = [
     'https://rs-engineering.pages.dev',
     'https://rs-engineering-admin.pages.dev'
   ];
   const origin = req.headers.origin;
-
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
   
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, auth-token');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, auth-token');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Max-Age', '86400');
+  }
 
   if (req.method === 'OPTIONS') {
     return res.sendStatus(204);
@@ -35,7 +36,6 @@ app.use((req, res, next) => {
 
   next();
 });
-
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -70,11 +70,14 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://web-dev:animate2080@c
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'ecommerce-products',
-    format: async (req, file) => 'png',
-    public_id: (req, file) => `${file.fieldname}-${Date.now()}`,
-  },
-  
+    folder: 'rs-engineering',
+    allowed_formats: ['jpg', 'png', 'gif', 'webp', 'pdf'],
+    resource_type: 'auto',
+    public_id: (req, file) => {
+      const timestamp = Date.now();
+      return `${file.fieldname}-${timestamp}`;
+    }
+  }
 });
 const upload = multer({ storage });
 
