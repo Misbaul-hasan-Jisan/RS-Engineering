@@ -57,7 +57,7 @@ const AddProduct = () => {
                 image: uploadData.image_url
             };
 
-            const addRes = await fetch(`৳{API}/add-product`, {
+            const addRes = await fetch(`${API}/add-product`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product)
