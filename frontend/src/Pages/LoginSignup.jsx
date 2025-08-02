@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 import { signInWithGoogle } from './firebase';// Adjust the import path as necessary
 import googleIcon from '../component/Assets/google_icon.png';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 const API = import.meta.env.VITE_API_BASE_URL; // Use environment variable for API base URL
 const LoginSignup = () => {
   const [state, setState] = useState("Login");
@@ -14,6 +15,7 @@ const LoginSignup = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
   const navigate = useNavigate();
   const { isLoggedIn, handleLogin, handleLogout } = useContext(ShopContext);
 
@@ -21,6 +23,9 @@ const LoginSignup = () => {
     setFormData({...formData, [e.target.name]: e.target.value});
     setError("");
   }
+    const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const login = async () => {
     setLoading(true);
@@ -133,7 +138,7 @@ const LoginSignup = () => {
     );
   }
 
-  return (
+    return (
     <div className='login-signup'>
       <div className="login-signup-container">
         <h1>{state}</h1>
@@ -170,15 +175,25 @@ const LoginSignup = () => {
             placeholder='Enter Email'
             required 
           />
-          <input 
-            name='password' 
-            value={formData.password} 
-            onChange={changeHandler} 
-            type="password" 
-            placeholder='Enter Password'
-            required 
-            minLength="6"
-          />
+          <div className="password-input-container">
+            <input 
+              name='password' 
+              value={formData.password} 
+              onChange={changeHandler} 
+              type={showPassword ? "text" : "password"} 
+              placeholder='Enter Password'
+              required 
+              minLength="6"
+            />
+            <button 
+              type="button" 
+              className="toggle-password" 
+              onClick={togglePasswordVisibility}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
         </div>
         
         {error && <div className="login-error">{error}</div>}
