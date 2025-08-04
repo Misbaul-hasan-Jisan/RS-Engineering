@@ -279,7 +279,7 @@ const CartItems = () => {
               {paymentMethod === "bkash" && (
                 <>
                   <p>
-                    Send payment to <strong>01XXXXXXXXX (bKash)</strong> and enter your Transaction ID below.
+                    Send payment to <strong>01737856391 (bKash)</strong> and enter your Transaction ID below.
                   </p>
                   {!txnSubmitted ? (
                     <div className="txn-field">
@@ -302,7 +302,7 @@ const CartItems = () => {
               {paymentMethod === "nagad" && (
                 <>
                   <p>
-                    Send payment to <strong>01XXXXXXXXX (Nagad)</strong> and enter your Transaction ID below.
+                    Send payment to <strong>01737856391 (Nagad)</strong> and enter your Transaction ID below.
                   </p>
                   {!txnSubmitted ? (
                     <div className="txn-field">

@@ -80,16 +80,16 @@ const Company = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                name: "Alex Johnson",
+                name: "Saiful Islam",
                 role: "CEO & Founder",
                 bio: "Visionary leader with 20+ years in the industry",
-                image: "pic1.webp"
+                image: "/pic1.webp"
               },
               {
-                name: "Sarah Williams",
+                name: "Rafiqul Islam",
                 role: "Chief Technology Officer",
                 bio: "Co-Founder",
-                image: "pic2.webp"
+                image: "/pic2.webp"
               },
               
             ].map((member, index) => (
