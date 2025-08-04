@@ -5,11 +5,17 @@ import remove_icon from "../Assets/cart_cross_icon.png";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 
-const API = import.meta.env.VITE_API_BASE_URL;  // Use environment variable for API base URL
+const API = import.meta.env.VITE_API_BASE_URL; // Use environment variable for API base URL
 
 const CartItems = () => {
-  const { all_product, cartItems, removeFromCart, getTotalCartValue, addToCart, clearCart } =
-    useContext(ShopContext);
+  const {
+    all_product,
+    cartItems,
+    removeFromCart,
+    getTotalCartValue,
+    addToCart,
+    clearCart,
+  } = useContext(ShopContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [shippingAddress, setShippingAddress] = useState("");
@@ -20,6 +26,23 @@ const CartItems = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const navigate = useNavigate();
+  const PAYMENT_OPTIONS = [
+    {
+      id: "bkash",
+      name: "bKash",
+      number: "01737856391",
+    },
+    {
+      id: "nagad",
+      name: "Nagad",
+      number: "01737856391", // Or different number if needed
+    },
+    {
+      id: "cod",
+      name: "Cash on Delivery",
+      number: null,
+    },
+  ];
 
   const cartValue = getTotalCartValue();
   const shippingFee = cartValue === 0 || cartValue > 800 ? 0 : 100;
@@ -46,7 +69,8 @@ const CartItems = () => {
 
       const data = await response.json();
 
-      if (!response.ok) throw new Error(data.error || "Failed to submit transaction ID");
+      if (!response.ok)
+        throw new Error(data.error || "Failed to submit transaction ID");
 
       setTxnSubmitted(true);
       setError(null);
@@ -57,7 +81,9 @@ const CartItems = () => {
 
   // Handle checkout process
   const handleCheckout = async () => {
-    const cartItemList = Array.isArray(cartItems) ? cartItems : Object.values(cartItems);
+    const cartItemList = Array.isArray(cartItems)
+      ? cartItems
+      : Object.values(cartItems);
 
     if (cartItemList.length === 0) {
       setError("Your cart is empty");
@@ -152,7 +178,9 @@ const CartItems = () => {
               <FaCheckCircle className="success-icon" />
               <h3>Your order has been placed successfully!</h3>
               <button
-                onClick={() => navigate("/order-confirmation", { state: { orderId } })}
+                onClick={() =>
+                  navigate("/order-confirmation", { state: { orderId } })
+                }
                 className="view-confirmation-btn"
               >
                 View Order Details
@@ -178,9 +206,15 @@ const CartItems = () => {
                   <p>{item.size}</p>
                   <p>৳{product.new_price}</p>
                   <div className="cartitems-quantity">
-                    <button onClick={() => removeFromCart(item.itemId, item.size)}>-</button>
+                    <button
+                      onClick={() => removeFromCart(item.itemId, item.size)}
+                    >
+                      -
+                    </button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => addToCart(item.itemId, item.size)}>+</button>
+                    <button onClick={() => addToCart(item.itemId, item.size)}>
+                      +
+                    </button>
                   </div>
                   <p>৳{product.new_price * item.quantity}</p>
                   <img
@@ -251,9 +285,12 @@ const CartItems = () => {
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     required
                   >
-                    <option value="bkash">bKash</option>
-                    <option value="nagad">Nagad</option>
-                    <option value="cod">Cash on Delivery</option>
+                    <option value="">Select a payment method</option>
+                    {PAYMENT_OPTIONS.map((method) => (
+                      <option key={method.id} value={method.id}>
+                        {method.name} {method.number && `(${method.number})`}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -277,68 +314,178 @@ const CartItems = () => {
 
               {/* Payment Instructions & Transaction ID submission */}
               {paymentMethod === "bkash" && (
-                <>
+                <div className="payment-instructions">
                   <p>
-                    Send payment to <strong>01737856391 (bKash)</strong> and enter your Transaction ID below.
+                    Please send <strong>৳{totalAmount}</strong> to{" "}
+                    <strong>
+                      {PAYMENT_OPTIONS.find((m) => m.id === "bkash").number}{" "}
+                      (bKash Personal)
+                    </strong>{" "}
+                    using:
                   </p>
+                  <div className="payment-steps">
+                    <p>1. Go to your bKash Mobile Menu</p>
+                    <p>2. Select "Send Money"</p>
+                    <p>
+                      3. Enter the bKash Number:{" "}
+                      <strong>
+                        {PAYMENT_OPTIONS.find((m) => m.id === "bkash").number}
+                      </strong>
+                    </p>
+                    <p>
+                      4. Enter Amount: <strong>৳{totalAmount}</strong>
+                    </p>
+                    <p>
+                      5. Enter Reference: <strong>Order #{orderId}</strong>
+                    </p>
+                    <p>6. Enter your bKash PIN to confirm</p>
+                  </div>
+
                   {!txnSubmitted ? (
                     <div className="txn-field">
-                      <input
-                        type="text"
-                        placeholder="Enter bKash Transaction ID"
-                        value={transactionId}
-                        onChange={(e) => setTransactionId(e.target.value)}
-                      />
-                      <button onClick={submitTxnId} disabled={!transactionId.trim()}>
-                        Submit Transaction ID
-                      </button>
+                      <h4>Enter Your bKash Transaction ID:</h4>
+                      <div className="txn-input-group">
+                        <input
+                          type="text"
+                          placeholder="Ex: 8A2BC4DEF5"
+                          value={transactionId}
+                          onChange={(e) => setTransactionId(e.target.value)}
+                        />
+                        <button
+                          onClick={submitTxnId}
+                          disabled={!transactionId.trim()}
+                          className="submit-txn-btn"
+                        >
+                          Submit Transaction ID
+                        </button>
+                      </div>
+                      <p className="txn-note">
+                        You can find the Transaction ID in your bKash payment
+                        confirmation SMS.
+                      </p>
                     </div>
                   ) : (
-                    <p className="txn-confirmed">✅ Transaction ID submitted successfully!</p>
+                    <div className="txn-confirmation">
+                      <FaCheckCircle className="success-icon" />
+                      <p>Transaction ID submitted successfully!</p>
+                      <p>
+                        We'll verify your payment and update your order status
+                        shortly.
+                      </p>
+                    </div>
                   )}
-                </>
+                </div>
               )}
 
               {paymentMethod === "nagad" && (
-                <>
+                <div className="payment-instructions">
                   <p>
-                    Send payment to <strong>01737856391 (Nagad)</strong> and enter your Transaction ID below.
+                    Please send <strong>৳{totalAmount}</strong> to{" "}
+                    <strong>
+                      {PAYMENT_OPTIONS.find((m) => m.id === "nagad").number}{" "}
+                      (Nagad Personal)
+                    </strong>{" "}
+                    using:
                   </p>
+                  <div className="payment-steps">
+                    <p>1. Go to your Nagad Mobile Menu</p>
+                    <p>2. Select "Send Money"</p>
+                    <p>
+                      3. Enter the Nagad Number:{" "}
+                      <strong>
+                        {PAYMENT_OPTIONS.find((m) => m.id === "nagad").number}
+                      </strong>
+                    </p>
+                    <p>
+                      4. Enter Amount: <strong>৳{totalAmount}</strong>
+                    </p>
+                    <p>
+                      5. Enter Reference: <strong>Order #{orderId}</strong>
+                    </p>
+                    <p>6. Enter your Nagad PIN to confirm</p>
+                  </div>
+
                   {!txnSubmitted ? (
                     <div className="txn-field">
-                      <input
-                        type="text"
-                        placeholder="Enter Nagad Transaction ID"
-                        value={transactionId}
-                        onChange={(e) => setTransactionId(e.target.value)}
-                      />
-                      <button onClick={submitTxnId} disabled={!transactionId.trim()}>
-                        Submit Transaction ID
-                      </button>
+                      <h4>Enter Your Nagad Transaction ID:</h4>
+                      <div className="txn-input-group">
+                        <input
+                          type="text"
+                          placeholder="Ex: NGD123456789"
+                          value={transactionId}
+                          onChange={(e) => setTransactionId(e.target.value)}
+                        />
+                        <button
+                          onClick={submitTxnId}
+                          disabled={!transactionId.trim()}
+                          className="submit-txn-btn"
+                        >
+                          Submit Transaction ID
+                        </button>
+                      </div>
+                      <p className="txn-note">
+                        You can find the Transaction ID in your Nagad payment
+                        confirmation SMS.
+                      </p>
                     </div>
                   ) : (
-                    <p className="txn-confirmed">✅ Transaction ID submitted successfully!</p>
+                    <div className="txn-confirmation">
+                      <FaCheckCircle className="success-icon" />
+                      <p>Transaction ID submitted successfully!</p>
+                      <p>
+                        We'll verify your payment and update your order status
+                        shortly.
+                      </p>
+                    </div>
                   )}
-                </>
+                </div>
               )}
 
               {paymentMethod === "cod" && (
-                <p>Cash on Delivery selected. Please keep the amount ready.</p>
+                <div className="cod-instructions">
+                  <h4>Cash on Delivery Selected</h4>
+                  <p>
+                    Please keep <strong>৳{totalAmount}</strong> ready for when
+                    our delivery agent arrives.
+                  </p>
+                  <p>
+                    Our delivery team will contact you at{" "}
+                    <strong>{phoneNumber}</strong> before delivery.
+                  </p>
+                  <div className="cod-notes">
+                    <p>✓ Please check your items before making payment</p>
+                    <p>✓ We accept exact cash only</p>
+                    <p>✓ Delivery time: 1-3 business days</p>
+                  </div>
+                </div>
               )}
 
-              <button
-                onClick={() => navigate("/order-confirmation", { state: { orderId } })}
-                className="view-confirmation-btn"
-              >
-                View Full Order Details
-              </button>
+              <div className="confirmation-actions">
+                <button
+                  onClick={() =>
+                    navigate("/order-confirmation", { state: { orderId } })
+                  }
+                  className="view-confirmation-btn"
+                >
+                  View Full Order Details
+                </button>
+                <button
+                  onClick={() => navigate("/")}
+                  className="continue-shopping-btn"
+                >
+                  Continue Shopping
+                </button>
+              </div>
             </div>
           )}
 
           {/* Show My Orders button if logged in */}
           {localStorage.getItem("auth-token") && (
             <div style={{ marginTop: "20px", textAlign: "center" }}>
-              <button onClick={() => navigate("/my-orders")} className="btn-myorders">
+              <button
+                onClick={() => navigate("/my-orders")}
+                className="btn-myorders"
+              >
                 View My Orders
               </button>
             </div>

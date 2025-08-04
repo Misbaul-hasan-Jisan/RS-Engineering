@@ -595,3 +595,99 @@
     width: 60px;
   }
 }
+.confirmation-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.payment-instructions, .cod-instructions {
+  background: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 15px 0;
+  text-align: left;
+}
+
+.payment-steps {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.payment-steps p {
+  margin: 5px 0;
+}
+
+.txn-field {
+  margin: 20px 0;
+}
+
+.txn-input-group {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.txn-input-group input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.submit-txn-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-txn-btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.txn-confirmation {
+  background: #e6f7ee;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 15px 0;
+}
+
+.cod-notes {
+  margin-top: 15px;
+}
+
+.cod-notes p {
+  margin: 5px 0;
+  position: relative;
+  padding-left: 25px;
+}
+
+.cod-notes p:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #28a745;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.view-confirmation-btn {
+  background: #007bff;
+  color: white;
+}
+
+.continue-shopping-btn {
+  background: #6c757d;
+  color: white;
+}
