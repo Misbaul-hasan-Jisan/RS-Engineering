@@ -20,6 +20,7 @@ import Contact from './component/Contact/Contact'
 import About from './Pages/About'
 import Company from './Pages/Company'
 import Store from './Pages/Store'
+import OrderDetails from './component/OrderDetails/OrderDetails'
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path='/login' element={<LoginSignup />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/order-details/:orderId" element={<OrderDetails />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/company" element={<Company />} />
