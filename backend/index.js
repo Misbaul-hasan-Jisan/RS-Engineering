@@ -121,13 +121,31 @@ const Product = mongoose.model("Product", {
 
 const Order = mongoose.model("Order", {
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  items: [{ productId: Number, name: String, size: String, quantity: Number, price: Number }],
+  items: [{ 
+    productId: Number, 
+    name: String, 
+    size: String, 
+    quantity: Number, 
+    price: Number,
+    image: String 
+  }],
   subtotal: Number,
   shipping: Number,
   total: Number,
   shippingAddress: String,
   phoneNumber: String,
-  status: { type: String, default: 'pending' },
+  paymentMethod: String,
+  transactionId: String,
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'verified', 'failed'],
+    default: 'pending'
+  },
+  status: { 
+    type: String, 
+    enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
+    default: 'pending' 
+  },
   statusHistory: [{
     status: String,
     changedAt: { type: Date, default: Date.now },
@@ -301,7 +319,8 @@ app.post('/getcart', fetchUser, async (req, res) => {
 // Orders
 app.post('/checkout', fetchUser, async (req, res) => {
   try {
-    const { items, subtotal, shipping, total, shippingAddress, phoneNumber } = req.body;
+    const { items, subtotal, shipping, total, shippingAddress, phoneNumber, paymentMethod } = req.body;
+    
     const order = new Order({ 
       userId: req.user.id, 
       items, 
@@ -309,11 +328,20 @@ app.post('/checkout', fetchUser, async (req, res) => {
       shipping, 
       total,
       shippingAddress,
-      phoneNumber
+      phoneNumber,
+      paymentMethod,
+      paymentStatus: paymentMethod === 'cod' ? 'verified' : 'pending'
     });
+    
     await order.save();
     await User.findByIdAndUpdate(req.user.id, { cartData: [] });
-    res.json({ success: true, orderId: order._id });
+    
+    res.json({ 
+      success: true, 
+      orderId: order._id,
+      paymentMethod,
+      requiresTransactionId: paymentMethod !== 'cod'
+    });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -535,22 +563,61 @@ app.get('/search-products', async (req, res) => {
   }
 });
 // Submit transaction ID and payment method
-app.post('/order/submit-transaction', async (req, res) => {
-  const { orderId, transactionId, paymentMethod } = req.body;
-  const userId = req.user.id;
-
+app.post('/order/submit-transaction', fetchUser, async (req, res) => {
   try {
-    const order = await Order.findOne({ _id: orderId, userId });
-    if (!order) return res.status(404).json({ error: "Order not found" });
+    const { orderId, transactionId, paymentMethod } = req.body;
+    
+    // Validate input
+    if (!orderId || !transactionId || !paymentMethod) {
+      return res.status(400).json({ 
+        success: false,
+        error: "Missing required fields (orderId, transactionId, paymentMethod)" 
+      });
+    }
 
-    order.transactionId = transactionId;
-    order.paymentMethod = paymentMethod;
-    order.paymentStatus = "pending"; // or "awaiting verification"
-    await order.save();
+    // Find and update order
+    const order = await Order.findOneAndUpdate(
+      { 
+        _id: orderId, 
+        userId: req.user.id,
+        paymentMethod: paymentMethod,
+        paymentStatus: 'pending'
+      },
+      { 
+        transactionId,
+        $push: {
+          statusHistory: {
+            status: 'processing',
+            notes: `Transaction ID submitted for ${paymentMethod} payment`
+          }
+        }
+      },
+      { new: true }
+    );
 
-    res.json({ message: "Transaction ID saved" });
-  } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    if (!order) {
+      return res.status(404).json({ 
+        success: false,
+        error: "Order not found or already processed" 
+      });
+    }
+
+    res.json({ 
+      success: true,
+      message: "Transaction ID submitted successfully",
+      order: {
+        id: order._id,
+        status: order.status,
+        paymentStatus: order.paymentStatus
+      }
+    });
+  } catch (error) {
+    console.error('Transaction submission error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: "Failed to submit transaction",
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 

@@ -2,9 +2,7 @@ import React from 'react';
 import './CSS/Pages.css';
 const Stores = () => {
   const locations = [
-    { city: 'New York', address: '123 Main St' },
-    { city: 'Los Angeles', address: '456 Sunset Blvd' },
-    { city: 'Chicago', address: '789 Michigan Ave' }
+    { city: 'Khilkhet', address: 'Uttarpara' },
   ];
 
   return (
