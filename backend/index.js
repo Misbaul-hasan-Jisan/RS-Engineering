@@ -620,6 +620,45 @@ app.post('/order/submit-transaction', fetchUser, async (req, res) => {
     });
   }
 });
+app.post('/admin/verify-payment', async (req, res) => {
+  try {
+    const { orderId, status, notes } = req.body;
+    
+    const validStatuses = ['verified', 'failed'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { 
+        paymentStatus: status,
+        $push: {
+          statusHistory: {
+            status: status === 'verified' ? 'processing' : 'pending',
+            notes: notes || `Payment ${status}`
+          }
+        }
+      },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.json({ 
+      success: true,
+      order: {
+        id: order._id,
+        paymentStatus: order.paymentStatus,
+        status: order.status
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Add these routes with your other routes
 
