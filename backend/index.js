@@ -127,17 +127,17 @@ const Order = mongoose.model("Order", {
     size: String, 
     quantity: Number, 
     price: Number,
-    image: String 
+    image: String  // Add image field
   }],
   subtotal: Number,
   shipping: Number,
   total: Number,
   shippingAddress: String,
   phoneNumber: String,
-  paymentMethod: String,
+  paymentMethod: { type: String, enum: ['bkash', 'nagad', 'cod'] },
   transactionId: String,
-  paymentStatus: {
-    type: String,
+  paymentStatus: { 
+    type: String, 
     enum: ['pending', 'verified', 'failed'],
     default: 'pending'
   },
@@ -534,13 +534,71 @@ app.get('/orders/by-email', async (req, res) => {
 
 app.get('/my-orders', fetchUser, async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.user.id }).sort({ createdAt: -1 });
-    res.json({ success: true, orders });
+    const orders = await Order.find({ userId: req.user.id })
+      .sort({ createdAt: -1 })
+      .lean(); // Convert to plain JS object
+    
+    // Populate product images if not already stored in order
+    const populatedOrders = await Promise.all(orders.map(async order => {
+      const itemsWithImages = await Promise.all(order.items.map(async item => {
+        if (item.image) return item;
+        const product = await Product.findOne({ id: item.productId });
+        return {
+          ...item,
+          image: product?.image || '/placeholder-product.jpg'
+        };
+      }));
+      return { ...order, items: itemsWithImages };
+    }));
+
+    res.json({ success: true, orders: populatedOrders });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to fetch orders",
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
+app.get('/order-details/:id', fetchUser, async (req, res) => {
+  try {
+    const order = await Order.findOne({ 
+      _id: req.params.id, 
+      userId: req.user.id 
+    }).lean();
 
+    if (!order) {
+      return res.status(404).json({ 
+        success: false,
+        error: "Order not found" 
+      });
+    }
+
+    // Populate product details if needed
+    const populatedItems = await Promise.all(order.items.map(async item => {
+      const product = await Product.findOne({ id: item.productId });
+      return {
+        ...item,
+        fullDetails: product || null
+      };
+    }));
+
+    res.json({
+      success: true,
+      order: {
+        ...order,
+        items: populatedItems
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false,
+      error: "Server error",
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
 // Search products
 app.get('/search-products', async (req, res) => {
   try {
