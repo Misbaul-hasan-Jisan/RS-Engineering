@@ -191,14 +191,14 @@ const About = () => {
           <div className="grid md:grid-cols-3 gap-8 ">
             {[
               {
-                name: "Alex Johnson",
+                name: "Saiful Islam",
                 role: "CEO & Founder",
-                image: "pic1.webp"
+                image: "/pic1.webp"
               },
               {
-                name: "Sarah Williams",
+                name: "Rafiqul Islam",
                 role: "Co-Founder",
-                image: "pic2.webp"
+                image: "/pic2.webp"
               },
               
             ].map((member, index) => (
