@@ -41,7 +41,7 @@ const About = () => {
                 About Our Company
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Established in 2005, [Company Name] has grown into a leading export-oriented manufacturer and global supplier, serving clients across 30+ countries. We specialize in [your product categories] with a commitment to quality, reliability, and competitive pricing.
+                Established in 2010, [Company Name] has grown into a leading export-oriented manufacturer and global supplier, serving clients across 30+ countries. We specialize in [your product categories] with a commitment to quality, reliability, and competitive pricing.
               </p>
               <p className="text-lg text-gray-600">
                 Our state-of-the-art manufacturing facilities span over 50,000 sq. ft, equipped with advanced machinery and operated by skilled professionals dedicated to meeting international standards.
@@ -227,46 +227,6 @@ const About = () => {
                 <li>Random batch testing</li>
               </ol>
             </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Global Presence */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-3xl font-bold text-center text-gray-800 mb-16"
-          >
-            Our Global Footprint
-          </motion.h2>
-          
-          <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-            <div className="grid md:grid-cols-3 divide-x divide-gray-200">
-              {[
-                { region: "Europe", countries: "Germany, France, UK, Italy, Spain" },
-                { region: "North America", countries: "USA, Canada, Mexico" },
-                { region: "Asia Pacific", countries: "Japan, Australia, Singapore, South Korea" }
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.15 }}
-                  viewport={{ once: true }}
-                  className="p-8 text-center"
-                >
-                  <h3 className="text-xl font-semibold text-gray-800 mb-4">{item.region}</h3>
-                  <p className="text-gray-600">{item.countries}</p>
-                </motion.div>
-              ))}
-            </div>
-            <div className="p-8 bg-gray-50 text-center">
-              <p className="text-gray-600">Plus 15+ other markets across Middle East, Africa, and South America</p>
-            </div>
           </div>
         </div>
       </section>
