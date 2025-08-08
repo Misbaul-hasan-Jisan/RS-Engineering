@@ -21,10 +21,12 @@ import About from './Pages/About'
 import Company from './Pages/Company'
 import Store from './Pages/Store'
 import OrderDetails from './component/OrderDetails/OrderDetails'
+import ScrollToTop from './component/ScrollToTop/ScrollToTop'
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path='/' element={<Shop />} />
