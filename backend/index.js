@@ -16,9 +16,10 @@ const admin = require('firebase-admin');
 // Force CORS headers manually for Pages.dev
 // Replace your current CORS middleware with:
 app.use((req, res, next) => {
-  const allowedOrigins = process.env.CORS_ORIGIN 
-  ? process.env.CORS_ORIGIN.split(',') 
-  : [];
+  const allowedOrigins = [
+    'https://rs-engineering.pages.dev',
+    'https://rs-engineering-admin.pages.dev'
+  ];
   const origin = req.headers.origin;
   
   if (allowedOrigins.includes(origin)) {
